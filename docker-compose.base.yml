@@ -1,5 +1,3 @@
-version: "3.8"
-
 services:
   pmm-server:
     image: percona/pmm-server:${PMM_TAG}
@@ -10,12 +8,14 @@ services:
     environment:
       - PMM_WATCHTOWER_HOST=http://watchtower:${WATCHTOWER_PORT}
       - PMM_WATCHTOWER_TOKEN=${WATCHTOWER_TOKEN}
+    volumes:
+      - pmm-data:/srv
     networks:
       - pmm-net
 
   watchtower:
     image: containrrr/watchtower
-    container_name: watchtower-${ENVIRONMENT}
+    container_name: ${WATCHTOWER_CONTAINER_NAME}
     restart: always
     ports:
       - "${WATCHTOWER_PORT}:${WATCHTOWER_PORT}"

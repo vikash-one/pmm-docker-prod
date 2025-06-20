@@ -1,14 +1,9 @@
-version: "3.8"
-
 services:
   pmm-server:
     volumes:
-      - ${PMM_VOLUME_NAME}:/srv
-  watchtower:
-    volumes:
-      - ${WATCHTOWER_VOLUME_NAME}:/var/run/docker.sock
+      - pmm-data:/srv
+
 volumes:
-  pmm-prod-data:
-    external: true
-  watchtower-prod-data:
+  pmm-data:
+    name: ${PMM_VOLUME_NAME}
     external: true
