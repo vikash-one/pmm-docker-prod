@@ -32,9 +32,9 @@ docker run --rm \
   -v "${BACKUP_DIR}:/backup" \
   alpine sh -c "tar czf /backup/${BACKUP_FILE} -C /data ."
 
-# Upload to S3
-echo "☁️ Uploading to S3: $S3_BUCKET/$BACKUP_FILE" | tee -a "$LOG_FILE"
-aws s3 cp "${BACKUP_DIR}/${BACKUP_FILE}" "${S3_BUCKET}/${BACKUP_FILE}" >> "$LOG_FILE" 2>&1
+# # Upload to S3
+# echo "☁️ Uploading to S3: $S3_BUCKET/$BACKUP_FILE" | tee -a "$LOG_FILE"
+# aws s3 cp "${BACKUP_DIR}/${BACKUP_FILE}" "${S3_BUCKET}/${BACKUP_FILE}" >> "$LOG_FILE" 2>&1
 
 # Restart Docker
 echo "▶️ Restarting PMM containers..." | tee -a "$LOG_FILE"
