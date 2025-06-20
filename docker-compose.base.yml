@@ -1,30 +1,47 @@
+version: '3.8'
+
 services:
   pmm-server:
     image: percona/pmm-server:${PMM_TAG}
     container_name: ${PMM_CONTAINER_NAME}
-    restart: always
+    restart: unless-stopped
     ports:
       - "${PMM_PORT}:8443"
     environment:
-      - PMM_WATCHTOWER_HOST=http://watchtower:${WATCHTOWER_PORT}
-      - PMM_WATCHTOWER_TOKEN=${WATCHTOWER_TOKEN}
+      PMM_WATCHTOWER_HOST: "http://watchtower:${WATCHTOWER_PORT}"
+      PMM_WATCHTOWER_TOKEN: "${WATCHTOWER_TOKEN}"
+    volumes:
+      - ${PMM_VOLUME_NAME}:/srv
     networks:
       - pmm-net
+    healthcheck:
+      test: ["CMD-SHELL", "curl -sfk https://localhost:8443 || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
 
   watchtower:
-    image: percona/watchtower
-    container_name: watchtower-${ENVIRONMENT}
-    restart: always
+    image: percona/watchtower:${WATCHTOWER_TAG}
+    container_name: ${WATCHTOWER_CONTAINER_NAME}
+    restart: unless-stopped
     environment:
-      - WATCHTOWER_HTTP_API_TOKEN=${WATCHTOWER_TOKEN}
-      - WATCHTOWER_HTTP_LISTEN_PORT=${WATCHTOWER_PORT}
-      - WATCHTOWER_HTTP_API_UPDATE=1
+      WATCHTOWER_HTTP_API_TOKEN: "${WATCHTOWER_TOKEN}"
+      WATCHTOWER_HTTP_LISTEN_PORT: "${WATCHTOWER_PORT}"
+      WATCHTOWER_HTTP_API_UPDATE: "1"
     ports:
       - "${WATCHTOWER_PORT}:${WATCHTOWER_PORT}"
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
     networks:
       - pmm-net
+    healthcheck:
+      test: ["CMD-SHELL", "curl -sf http://localhost:${WATCHTOWER_PORT}/v1/status || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+volumes:
+  pmm-prod-data: {}
 
 networks:
   pmm-net:
