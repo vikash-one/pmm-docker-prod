@@ -1,6 +1,6 @@
 services:
   pmm-server:
-    image: percona/pmm-server
+    image: percona/pmm-server:${PMM_TAG}
     container_name: ${PMM_CONTAINER_NAME}
     restart: always
     ports:
@@ -14,7 +14,7 @@ services:
       - pmm-net  # 🔄 Use network defined below
 
   watchtower:
-    image: percona/watchtower
+    image: percona/watchtower:${WATCHTOWER_TAG}
     container_name: ${WATCHTOWER_CONTAINER_NAME}
     restart: always
     ports:
@@ -26,7 +26,6 @@ services:
       --http-api-update
       --http-api-token=${WATCHTOWER_TOKEN}
       --http-api-metrics
-      --interval=30
       --cleanup
       --include-restarting
     volumes:
