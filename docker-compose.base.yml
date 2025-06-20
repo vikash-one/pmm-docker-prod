@@ -20,6 +20,7 @@ services:
     ports:
       - "${WATCHTOWER_PORT}:${WATCHTOWER_PORT}"
     environment:
+      - WATCHTOWER_HTTP_API=true  
       - WATCHTOWER_HTTP_API_TOKEN=${WATCHTOWER_TOKEN}
     command: >
       --http-api-update
