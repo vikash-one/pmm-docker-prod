@@ -9,6 +9,6 @@ services:
       - ${WATCHTOWER_VOLUME_NAME}:/var/run/docker.sock
 volumes:
   pmm-prod-data:
-    name: pmm-prod-data
+    external: true
   watchtower-prod-data:
-    name: watchtower-prod-data
+    external: true
