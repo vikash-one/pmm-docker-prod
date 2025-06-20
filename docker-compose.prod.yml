@@ -4,7 +4,11 @@ services:
   pmm-server:
     volumes:
       - ${PMM_VOLUME_NAME}:/srv
-
+  watchtower:
+    volumes:
+      - ${WATCHTOWER_VOLUME_NAME}:/var/run/docker.sock
 volumes:
   pmm-prod-data:
     name: pmm-prod-data
+  watchtower-prod-data:
+    name: watchtower-prod-data
