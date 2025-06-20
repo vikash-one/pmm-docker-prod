@@ -1,3 +1,5 @@
+version: "3.8"
+
 services:
   pmm-server:
     image: percona/pmm-server:${PMM_TAG}
@@ -21,7 +23,13 @@ services:
       - WATCHTOWER_HTTP_API_UPDATE=1
       - WATCHTOWER_CLEANUP=true
       - WATCHTOWER_INCLUDE_RESTARTING=true
-      
+    command: >
+      --cleanup
+      --http-api-token=${WATCHTOWER_TOKEN}
+      --http-api-update
+      --http-api-listen-port=${WATCHTOWER_PORT}
+      --include-restarting
+      --interval=30
     ports:
       - "${WATCHTOWER_PORT}:${WATCHTOWER_PORT}"
     volumes:

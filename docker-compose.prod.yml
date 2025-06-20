@@ -1,7 +1,9 @@
+version: "3.8"
+
 services:
   pmm-server:
     volumes:
-      - pmm-prod-data:/srv
+      - ${PMM_VOLUME_NAME}:/srv
 
 volumes:
   pmm-prod-data:
