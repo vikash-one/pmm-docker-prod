@@ -13,25 +13,44 @@ services:
     networks:
       - pmm-net
 
+  # watchtower:
+  #   image: percona/watchtower
+  #   container_name: watchtower-${ENVIRONMENT}
+  #   restart: always
+  #   environment:
+  #     - WATCHTOWER_HTTP_API_TOKEN=${WATCHTOWER_TOKEN}
+  #     - WATCHTOWER_HTTP_LISTEN_PORT=${WATCHTOWER_PORT}
+  #     - WATCHTOWER_HTTP_API_UPDATE=1
+  #     - WATCHTOWER_CLEANUP=true
+  #     - WATCHTOWER_INCLUDE_RESTARTING=true
+  #   command: >
+  #     --cleanup
+  #     --http-api-token=${WATCHTOWER_TOKEN}
+  #     --http-api-update
+  #     --http-api-listen-port=${WATCHTOWER_PORT}
+  #     --include-restarting
+  #     --interval=30
+  #   ports:
+  #     - "${WATCHTOWER_PORT}:${WATCHTOWER_PORT}"
+  #   volumes:
+  #     - /var/run/docker.sock:/var/run/docker.sock
+  #   networks:
+  #     - pmm-net
   watchtower:
-    image: percona/watchtower
+    image: containrrr/watchtower
     container_name: watchtower-${ENVIRONMENT}
     restart: always
-    environment:
-      - WATCHTOWER_HTTP_API_TOKEN=${WATCHTOWER_TOKEN}
-      - WATCHTOWER_HTTP_LISTEN_PORT=${WATCHTOWER_PORT}
-      - WATCHTOWER_HTTP_API_UPDATE=1
-      - WATCHTOWER_CLEANUP=true
-      - WATCHTOWER_INCLUDE_RESTARTING=true
-    command: >
-      --cleanup
-      --http-api-token=${WATCHTOWER_TOKEN}
-      --http-api-update
-      --http-api-listen-port=${WATCHTOWER_PORT}
-      --include-restarting
-      --interval=30
     ports:
       - "${WATCHTOWER_PORT}:${WATCHTOWER_PORT}"
+    environment:
+      - WATCHTOWER_HTTP_API_TOKEN=${WATCHTOWER_TOKEN}
+    command: >
+      --http-api-update
+      --http-api-token=${WATCHTOWER_TOKEN}
+      --http-api-metrics
+      --interval=30
+      --cleanup
+      --include-restarting
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
     networks:
