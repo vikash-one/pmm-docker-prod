@@ -1,0 +1,8 @@
+services:
+  pmm-server:
+    volumes:
+      - pmm-prod-data:/srv
+
+volumes:
+  pmm-prod-data:
+    name: pmm-prod-data

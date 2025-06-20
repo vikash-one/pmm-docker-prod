@@ -1,0 +1,31 @@
+services:
+  pmm-server:
+    image: percona/pmm-server:${PMM_TAG}
+    container_name: ${PMM_CONTAINER_NAME}
+    restart: always
+    ports:
+      - "${PMM_PORT}:8443"
+    environment:
+      - PMM_WATCHTOWER_HOST=http://watchtower:${WATCHTOWER_PORT}
+      - PMM_WATCHTOWER_TOKEN=${WATCHTOWER_TOKEN}
+    networks:
+      - pmm-net
+
+  watchtower:
+    image: percona/watchtower
+    container_name: watchtower-${ENVIRONMENT}
+    restart: always
+    environment:
+      - WATCHTOWER_HTTP_API_TOKEN=${WATCHTOWER_TOKEN}
+      - WATCHTOWER_HTTP_LISTEN_PORT=${WATCHTOWER_PORT}
+      - WATCHTOWER_HTTP_API_UPDATE=1
+    ports:
+      - "${WATCHTOWER_PORT}:${WATCHTOWER_PORT}"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    networks:
+      - pmm-net
+
+networks:
+  pmm-net:
+    driver: bridge
