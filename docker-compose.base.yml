@@ -1,6 +1,6 @@
 services:
   pmm-server:
-    image: percona/pmm-server:${PMM_TAG}
+    image: percona/pmm-server
     container_name: ${PMM_CONTAINER_NAME}
     restart: always
     ports:
@@ -11,10 +11,10 @@ services:
     volumes:
       - ${PMM_VOLUME_NAME}:/srv
     networks:
-      - pmm-net
+      - pmm-net  # 🔄 Use network defined below
 
   watchtower:
-    image: percona/watchtower:latest
+    image: percona/watchtower
     container_name: ${WATCHTOWER_CONTAINER_NAME}
     restart: always
     ports:
@@ -32,8 +32,9 @@ services:
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
     networks:
-      - pmm-net
+      - pmm-net  # ✅ Correct indentation
 
 networks:
   pmm-net:
-    driver: bridge
+    external: true
+    name: pmm-docker-prod_pmm-net  # ✅ Correct external network name
