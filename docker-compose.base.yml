@@ -4,7 +4,7 @@ services:
     container_name: ${PMM_CONTAINER_NAME}
     restart: always
     ports:
-      - "${PMM_PORT}:8443"
+      - "${PMM_PORT}:443"
     environment:
       - PMM_WATCHTOWER_HOST=http://watchtower:${WATCHTOWER_PORT}
       - PMM_WATCHTOWER_TOKEN=${WATCHTOWER_TOKEN}

@@ -11,6 +11,7 @@ chmod +x install-docker-and-deps.sh
 ```
 cp .env .env.prod
 docker compose -f docker-compose.base.yml -f docker-compose.prod.yml --env-file .env up -d
+docker compose -f docker-compose.base.yml -f docker-compose.prod.yml --env-file .env down
 ```
 
 ## Backup
